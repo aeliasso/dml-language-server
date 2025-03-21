@@ -1,5 +1,6 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
+use lsp_types::DiagnosticSeverity;
 use logos::Lexer;
 use regex::Regex;
 use log::debug;
@@ -475,6 +476,7 @@ impl <'a> FileParser<'a> {
                 range: tok.range,
                 description: format!("Unexpected token {}, expected {}",
                                      tok.kind.description(), desc),
+                severity: DiagnosticSeverity::WARNING,
             }).collect()
     }
 }

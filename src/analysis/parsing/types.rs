@@ -1,3 +1,4 @@
+use lsp_types::DiagnosticSeverity;
 use crate::lint::rules::spacing::SpBracesArgs;
 use crate::lint::rules::CurrentRules;
 //  © 2024 Intel Corporation
@@ -124,6 +125,7 @@ impl TreeElement for LayoutContent {
                     range: self.byteorder.range(),
                     description: "Must be 'big-endian' or \
                                   'little-endian'".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 });
             }
         }
@@ -284,6 +286,7 @@ impl TreeElement for BitfieldsContent {
                 None => errors.push(LocalDMLError {
                     range: field.cdecl.range(),
                     description: "missing name in declaration".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 }),
                 Some(tok) => {
                     let name = tok.read_token(file);
@@ -292,6 +295,7 @@ impl TreeElement for BitfieldsContent {
                             range: field.cdecl.range(),
                             description: "The name is already in use in the \
                                           same scope".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         })
                     } else {
                         used_names.push(name)
@@ -578,7 +582,8 @@ impl TreeElement for CTypeDeclSimpleContent {
                             errors.push(LocalDMLError {
                                 range: token.range,
                                 description:
-                                "Expected '*' before 'const'".to_string()
+                                "Expected '*' before 'const'".to_string(),
+                                severity: DiagnosticSeverity::WARNING,
                             })
                         }
                         previous_was_mult = false;

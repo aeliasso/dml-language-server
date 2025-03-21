@@ -1,6 +1,7 @@
 use itertools::izip;
 use std::convert::TryInto;
 use serde::{Deserialize, Serialize};
+use lsp_types::DiagnosticSeverity;
 use crate::analysis::parsing::types::{BitfieldsContent, LayoutContent,
                                       StructTypeContent};
 use crate::lint::rules::Rule;
@@ -106,6 +107,7 @@ impl SpBracesRule {
                 let dmlerror = LocalDMLError {
                     range: location.lbrace,
                     description: Self::description().to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 };
                 acc.push(dmlerror);
             }
@@ -114,6 +116,7 @@ impl SpBracesRule {
                 let dmlerror = LocalDMLError {
                     range: location.rbrace,
                     description: Self::description().to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 };
                 acc.push(dmlerror);
             }
@@ -247,6 +250,7 @@ impl SpPunctRule {
                     let dmlerror = LocalDMLError {
                         range: error_range,
                         description: Self::description().to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     };
                     acc.push(dmlerror);
                 }
@@ -262,6 +266,7 @@ impl SpPunctRule {
                     let dmlerror = LocalDMLError {
                         range: error_range,
                         description: Self::description().to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     };
                     acc.push(dmlerror);
                 }
@@ -316,6 +321,7 @@ impl NspFunparRule {
             let dmlerror = LocalDMLError {
                 range: gap,
                 description: Self::description().to_string(),
+                severity: DiagnosticSeverity::WARNING,
             };
             acc.push(dmlerror);
         }
@@ -410,6 +416,7 @@ impl NspInparenRule {
                 let dmlerror = LocalDMLError {
                     range: gap,
                     description: Self::description().to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 };
                 acc.push(dmlerror);
             }
@@ -421,6 +428,7 @@ impl NspInparenRule {
                 let dmlerror = LocalDMLError {
                     range: gap,
                     description: Self::description().to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 };
                 acc.push(dmlerror);
             }
@@ -473,6 +481,7 @@ impl NspUnaryRule {
             let dmlerror = LocalDMLError {
                 range: gap,
                 description: Self::description().to_string(),
+                severity: DiagnosticSeverity::WARNING,
             };
             acc.push(dmlerror);
         }
@@ -506,6 +515,7 @@ impl NspTrailingRule {
                                                       tokens_end,
                                                       len),
                 description: Self::description().to_string(),
+                severity: DiagnosticSeverity::WARNING,
             };
             acc.push(dmlerror);
         }

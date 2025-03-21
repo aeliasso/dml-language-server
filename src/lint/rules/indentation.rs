@@ -1,4 +1,5 @@
 use std::convert::TryInto;
+use lsp_types::DiagnosticSeverity;
 
 use crate::{analysis::LocalDMLError, span::{Range, ZeroIndexed}};
 use serde::{Deserialize, Serialize};
@@ -27,6 +28,7 @@ impl LongLinesRule {
             let dmlerror = LocalDMLError {
                 range: Range::<ZeroIndexed>::from_u32(rowu32, rowu32, self.max_length, len),
                 description: msg,
+                severity: DiagnosticSeverity::INFORMATION,
             };
             acc.push(dmlerror);
         }

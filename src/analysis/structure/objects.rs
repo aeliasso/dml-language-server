@@ -1,5 +1,6 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
+use lsp_types::DiagnosticSeverity;
 use crate::analysis::parsing::lexer::TokenKind;
 use crate::analysis::parsing::{misc, structure};
 use crate::analysis::parsing::tree::{LeafToken, ZeroRange,
@@ -145,6 +146,7 @@ impl ToStructure<structure::DMLVersionContent> for Version {
                                     range: content.version.range(),
                                     description:
                                     "Invalid DML minor version".to_string(),
+                                    severity: DiagnosticSeverity::WARNING,
                                 });
                             None
                         }
@@ -160,6 +162,7 @@ impl ToStructure<structure::DMLVersionContent> for Version {
                                     range: content.version.range(),
                                     description:
                                     "Invalid DML major version".to_string(),
+                                    severity: DiagnosticSeverity::WARNING,
                                 });
                             None
                         }
@@ -1376,6 +1379,7 @@ fn to_variable_structure<'a>(content: &structure::VariableContent,
                     |i|i.range(), assign.range()),
                 description: "Wrong number of \
                               initializers in declaration".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             });
         }
     }
@@ -1641,6 +1645,7 @@ fn to_objectstatement<'a>(content: &structure::DMLObjectContent,
                 range: con.range(),
                 description: "Provisional declaration must immediately follow \
                               the version declaration".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             });
             return None;
         },

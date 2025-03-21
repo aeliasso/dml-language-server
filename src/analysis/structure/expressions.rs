@@ -1,6 +1,7 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
 use log::{error};
+use lsp_types::DiagnosticSeverity;
 
 use std::num::{IntErrorKind, ParseIntError};
 
@@ -631,12 +632,14 @@ fn report_or_return<T>(range: &ZeroRange,
                     range: *range,
                     description:
                     "Too large integer constant".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 }),
             IntErrorKind::NegOverflow => report.push(
                 LocalDMLError {
                     range: *range,
                     description:
                     "Too small integer constant".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 }),
             e => error!("Unexpected failure in int parse at {:?}: {:?}",
                         range, e),

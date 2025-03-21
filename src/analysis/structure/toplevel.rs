@@ -4,6 +4,7 @@ use std::fmt::{Display, Formatter, self as fmt};
 use std::path::PathBuf;
 
 use log::trace;
+use lsp_types::DiagnosticSeverity;
 
 use crate::analysis::structure::objects::{Bitorder, CBlock, CompositeObject,
                                           CompObjectKind, Constant, Device,
@@ -365,16 +366,19 @@ fn flatten_hashif_branch(context: StatementContext,
                         report.push(LocalDMLError {
                             range: ver.span.range,
                             description: "Version declaration must be first statement in file".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Device(dev) =>
                         report.push(LocalDMLError {
                             range: dev.span.range,
                             description: "Device declaration must be second statement in file".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Bitorder(bit) =>
                         report.push(LocalDMLError {
                             range: bit.span.range,
                             description: "Bitorder declaration must follow a device declaration".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Constant(con) =>
                         report.push(LocalDMLError {
@@ -382,6 +386,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Constant declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Extern(ext) =>
                         report.push(LocalDMLError {
@@ -390,6 +395,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Extern declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Template(tmpl) =>
                         report.push(LocalDMLError {
@@ -397,6 +403,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Template declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Header(block) =>
                         report.push(LocalDMLError {
@@ -404,6 +411,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Header declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Footer(block) =>
                         report.push(LocalDMLError {
@@ -411,6 +419,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Footer declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     // TODO: Verify that conditions are constants
                     // or builtin parameters
@@ -423,6 +432,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Loggroup declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::Typedef(typdef) =>
                         report.push(LocalDMLError {
@@ -430,6 +440,7 @@ fn flatten_hashif_branch(context: StatementContext,
                             description: format!(
                                 "Typedef declaration not allowed in {}",
                                 context),
+                            severity: DiagnosticSeverity::WARNING,
                         }),
                     DMLObject::CompositeObject(compobj) => {
                         let subspec = flatten_hashif_branch(
@@ -641,6 +652,7 @@ impl TopLevel {
                 description:
                 "First statement must be version declaration ('dml 1.4;')"
                     .to_string(),
+                severity: DiagnosticSeverity::WARNING,
             });
         };
 
@@ -684,16 +696,19 @@ impl TopLevel {
                             report.push(LocalDMLError {
                                 range: ver.span.range,
                                 description: "Version declaration must be first statement in file".to_string(),
+                                severity: DiagnosticSeverity::WARNING,
                             }),
                         DMLObject::Device(dev) =>
                             report.push(LocalDMLError {
                                 range: dev.span.range,
                                 description: "Device declaration must be second statement in file".to_string(),
+                                severity: DiagnosticSeverity::WARNING,
                             }),
                         DMLObject::Bitorder(bit) =>
                             report.push(LocalDMLError {
                                 range: bit.span.range,
                                 description: "Bitorder declaration must follow a device declaration".to_string(),
+                                severity: DiagnosticSeverity::WARNING,
                             }),
                         DMLObject::Loggroup(log) =>
                             loggroups.push(log.clone()),

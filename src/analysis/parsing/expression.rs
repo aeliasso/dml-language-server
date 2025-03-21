@@ -1,5 +1,6 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
+use lsp_types::DiagnosticSeverity;
 use crate::span::Range;
 use crate::analysis::parsing::lexer::TokenKind;
 use crate::analysis::parsing::parser::{Token, doesnt_understand_tokens,
@@ -1160,7 +1161,8 @@ pub fn ensure_string_concatenation(expr: &Expression) -> Vec<LocalDMLError> {
                             range: tok.range,
                             description: format!(
                                 "Can only compose string literals with '+', got {}",
-                                tok.kind.description())}]
+                                tok.kind.description()),
+                                severity: DiagnosticSeverity::WARNING,}]
                     } else {
                         vec![]
                     }, vec![]);
@@ -1177,7 +1179,8 @@ pub fn ensure_string_concatenation(expr: &Expression) -> Vec<LocalDMLError> {
                             range: tok.range,
                             description: format!(
                                 "Expected string literal, got {}",
-                                tok.kind.description())
+                                tok.kind.description()),
+                            severity: DiagnosticSeverity::WARNING,
                         }]} else {
                         vec![]
                     }, vec![])},
@@ -1187,6 +1190,7 @@ pub fn ensure_string_concatenation(expr: &Expression) -> Vec<LocalDMLError> {
             _ => vec![LocalDMLError {
                 range: content.range(),
                 description: "Expected composed string literal".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             }],
         }
     }

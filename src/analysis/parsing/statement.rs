@@ -1,6 +1,7 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
 use log::error;
+use lsp_types::DiagnosticSeverity;
 
 use crate::span::Range;
 use crate::analysis::parsing::lexer::TokenKind;
@@ -1215,6 +1216,7 @@ impl TreeElement for AfterTiming {
                             range: unit_tok.range(),
                             description: "Expected time unit ('s', 'cycles', 'ps')"
                                 .to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         }]
                     }
                 }

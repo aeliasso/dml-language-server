@@ -1,6 +1,7 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
 use log::error;
+use lsp_types::DiagnosticSeverity;
 
 use crate::analysis::{DeclarationSpan,
                       LocalDMLError};
@@ -589,6 +590,7 @@ impl Log {
                                       \"error\", \"warning\", \"info\", \"unimpl\", \
                                       \"critical\", and \"spec_viol\"."
                             .to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     });
                     None
                 },

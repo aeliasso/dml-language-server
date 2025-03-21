@@ -2,6 +2,7 @@
 //  SPDX-License-Identifier: Apache-2.0 and MIT
 // Types, traits, and structs for the structure of a DML file
 use log::{trace};
+use lsp_types::DiagnosticSeverity;
 
 use crate::analysis::parsing::expression::{Expression,
                                            ensure_string_concatenation};
@@ -139,6 +140,7 @@ impl TreeElement for MethodContent {
                     range: self.arguments.range(),
                     description: "a method declared as startup \
                                   cannot have input parameters".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 });
             }
             if self.memoized.is_some()
@@ -149,6 +151,7 @@ impl TreeElement for MethodContent {
                         description: "a method declared as memoized \
                                       must either throw or have return \
                                       types".to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     });
                 }
             if self.memoized.is_none() {
@@ -157,6 +160,7 @@ impl TreeElement for MethodContent {
                         range: self.throws.range(),
                         description: "a startup method not declared as \
                                       memoized cannot throw".to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     });
                 }
                 if self.returns.is_some() {
@@ -165,6 +169,7 @@ impl TreeElement for MethodContent {
                         description: "a startup method not declared as \
                                       memoized cannot have return \
                                       values".to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     });
                 }
             }
@@ -173,6 +178,7 @@ impl TreeElement for MethodContent {
                     range: self.default.range(),
                     description: "a startup method cannot be declared \
                                   as default".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 });
             }
         }
@@ -184,6 +190,7 @@ impl TreeElement for MethodContent {
                             description: "a method declared as startup \
                                           must also be declared \
                                           independent".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 });
             }
             if self.memoized.is_some() {
@@ -192,6 +199,7 @@ impl TreeElement for MethodContent {
                             description: "a method declared as memoized \
                                           must also be declared \
                                           independent".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 });
             }
         }
@@ -202,6 +210,7 @@ impl TreeElement for MethodContent {
                 description: "a method declared as memoized \
                               must also be declared \
                               startup".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             });
         }
 
@@ -218,6 +227,7 @@ impl TreeElement for MethodContent {
                             range: inl.range(),
                             description: "inline arguments require method to \
                                           be declared as inline".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         });
                     }
                 }
@@ -230,6 +240,7 @@ impl TreeElement for MethodContent {
                 range: inline.unwrap().range,
                 description: "only use inline if there are \
                               untyped arguments".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             });
         }
         errors
@@ -719,6 +730,7 @@ fn check_dmlobject_kind(obj: &DMLObjectContent, _file: &TextFile) ->
                         description: "Typed parameter declaration only \
                                       permitted in top level template \
                                       block".to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     }];
                 }
             },
@@ -732,6 +744,7 @@ fn check_dmlobject_kind(obj: &DMLObjectContent, _file: &TextFile) ->
                                           permitted in top level \
                                           template \
                                           block".to_string(),
+                            severity: DiagnosticSeverity::WARNING,
                         }]
                     }
             },
@@ -1175,6 +1188,7 @@ impl TreeElement for DMLVersionContent {
                         description:
                         "The language server only supports DML 1.4 files"
                             .to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     }]
                 } else {
                     vec![]
@@ -1255,6 +1269,7 @@ impl TreeElement for BitorderContent {
                 vec![LocalDMLError {
                     range: self.bitorderdesc.range(),
                     description: "bitorder must be 'le' or 'be'".to_string(),
+                    severity: DiagnosticSeverity::WARNING,
                 }]
             } else { vec![] },
             None => vec![]
@@ -1636,6 +1651,7 @@ impl TreeElement for InEachContent {
                         range: tok.range(),
                         description:
                         "'in each' declaration needs a compound declaration".to_string(),
+                        severity: DiagnosticSeverity::WARNING,
                     }],
                     _ => vec![],
                 }

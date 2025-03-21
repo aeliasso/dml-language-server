@@ -1,5 +1,6 @@
 //  © 2024 Intel Corporation
 //  SPDX-License-Identifier: Apache-2.0 and MIT
+use lsp_types::DiagnosticSeverity;
 use crate::span::Range;
 use crate::analysis::parsing::lexer::TokenKind;
 use crate::analysis::parsing::parser::{Token, doesnt_understand_tokens,
@@ -605,6 +606,7 @@ impl CDecl {
             vec![LocalDMLError {
                 range: self.range(),
                 description: "missing name in declaration".to_string(),
+                severity: DiagnosticSeverity::WARNING,
             }]
         } else {
             vec![]

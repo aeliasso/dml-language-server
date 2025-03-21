@@ -247,6 +247,7 @@ impl DMLError {
 pub struct LocalDMLError {
     pub range: ZeroRange,
     pub description: String,
+    pub severity: DiagnosticSeverity,
 }
 
 impl LocalDMLError {
@@ -267,7 +268,7 @@ impl LocalDMLError {
             span: ZeroSpan::from_range(self.range, file),
             description: self.description,
             related: vec![],
-            severity: Some(DiagnosticSeverity::WARNING),
+            severity: Some(self.severity),
         }
     }
 }
@@ -281,6 +282,7 @@ impl From<&MissingToken> for LocalDMLError {
                                      Some(endtok) => endtok.kind.description(),
                                      None => "EOF",
                                  }),
+            severity: DiagnosticSeverity::WARNING,
         }
     }
 }
@@ -294,6 +296,7 @@ pub fn make_error_from_missing_content(
                                      Some(endtok) => endtok.kind.description(),
                                      None => "EOF",
                                  }),
+            severity: DiagnosticSeverity::WARNING,
         }
 }
 
@@ -1350,6 +1353,7 @@ impl IsolatedAnalysis {
                 description:
                 "The language server only supports DML 1.4 files"
                     .to_string(),
+                severity: DiagnosticSeverity::WARNING,
             }.with_file(path.as_path())];
             ast = parsing::structure::TopAst {
                 version: ast.version,
